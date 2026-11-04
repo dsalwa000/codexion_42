@@ -1,15 +1,13 @@
 #include "codexion.h"
 
-int	main(int argc, char *argv[])
+int	main(int argc, char **argv)
 {
+	t_params	params;
 
-	if (argc == 9)
+	if (!parser(argc, argv + 1, &params))
 	{
-		
-	}
-	else
-	{
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "Error: invalid arguments\n");
+		return (1);
 	}
 	return (0);
 }
