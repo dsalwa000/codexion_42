@@ -7,6 +7,7 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <pthread.h>
 
 # define NB_ARGS 8
 
@@ -28,10 +29,62 @@ typedef struct s_params
 	t_sched	sched;
 }	t_params;
 
+typedef struct s_request
+{
+	int			coder_id;
+	long long	priority;
+}	t_request;
+
+typedef struct s_queue
+{
+	t_request	requests[2];
+	int			in_line;
+}	t_queue;
+
+typedef struct s_dongle
+{
+	pthread_mutex_t	mutex;
+	pthread_cond_t	cond;
+	int				is_held;
+	long long		available_at;
+	long long		next_ticket;
+	t_queue			queue;
+}	t_dongle;
+
+typedef struct s_coder
+{
+	int					id;
+	pthread_t			thread;
+	t_dongle			*first;
+	t_dongle			*second;
+	long long			last_compile_start;
+	int					compiles;
+	pthread_mutex_t		state_mutex;
+	struct s_simulation	*simulation;
+}	t_coder;
+
+typedef struct s_simulation
+{
+	t_params		params;
+	long long		start;
+	int				stopped;
+	pthread_mutex_t	stop_mutex;
+	pthread_mutex_t	log_mutex;
+	pthread_t		monitor;
+	t_coder			*coders;
+	t_dongle		*dongles;
+}	t_simulation;
+
 int			parser(int argc, char **args, t_params *params);
 
 long long	get_time_ms(void);
 void		stop_therad_for(long long ms);
 
+int			setup_simulation(t_simulation *sim, t_params params);
+
+void		destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders);
+
+void		monitor_thread();
+void		coder_thread();
 
 #endif
