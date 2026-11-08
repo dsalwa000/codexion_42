@@ -16,6 +16,6 @@ int	main(int argc, char **argv)
 		return (1); 
 	}
 
-	printf("All good so far\n");
+	destroy_simulation(&simulation, params.coders, params.coders);
 	return (0);
 }

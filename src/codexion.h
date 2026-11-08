@@ -10,6 +10,7 @@
 # include <pthread.h>
 
 # define NB_ARGS 8
+# define CHECK_WAIT 1000
 
 typedef enum e_sched
 {
@@ -84,7 +85,10 @@ int			setup_simulation(t_simulation *sim, t_params params);
 
 void		destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders);
 
-void		monitor_thread();
-void		coder_thread();
+void		print_status(t_coder *coder, char *msg);
+
+void		start_simulation(t_simulation *sim);
+
+int			check_burnout(t_coder *coder);
 
 #endif
