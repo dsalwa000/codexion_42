@@ -33,8 +33,8 @@ static int	init_coder(t_simulation *sim, int i)
 
 static int	init_simulation(t_simulation *sim, t_params params)
 {
+	memset(sim, 0, sizeof(*sim));
 	sim->params = params;
-	sim->stopped = 0;
 	if (pthread_mutex_init(&sim->stop_mutex, NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&sim->log_mutex, NULL) != 0)

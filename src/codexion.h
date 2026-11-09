@@ -69,6 +69,8 @@ typedef struct s_simulation
 	t_params		params;
 	long long		start;
 	int				stopped;
+	int				nb_coders;
+	int				monitor_created;
 	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	log_mutex;
 	pthread_t		monitor;
@@ -83,12 +85,17 @@ void		stop_therad_for(long long ms);
 
 int			setup_simulation(t_simulation *sim, t_params params);
 
+void		join_threads(t_simulation *sim);
+int			abort_start(t_simulation *sim);
 void		destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders);
 
 void		print_status(t_coder *coder, char *msg);
+int			print_error(char *msg);
 
-void		start_simulation(t_simulation *sim);
+int			start_simulation(t_simulation *sim);
 
+int			is_stopped(t_simulation *sim);
+void		set_stopped(t_simulation *sim, int stopped);
 int			check_burnout(t_coder *coder);
 
 #endif

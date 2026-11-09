@@ -6,16 +6,14 @@ int	main(int argc, char **argv)
 	t_simulation	simulation;
 
 	if (!parser(argc, argv + 1, &params))
+		return (print_error("invalid arguments"));
+	if (!setup_simulation(&simulation, params))
+		return (print_error("simulation is not set properly"));
+	if (!start_simulation(&simulation))
 	{
-		fprintf(stderr, "Error: invalid arguments\n");
-		return (1);
+		abort_start(&simulation);
+		return (print_error("thread creation error"));
 	}
-	if (!(setup_simulation(&simulation, params)))
-	{
-		fprintf(stderr, "Error: simulation is not set properly\n");
-		return (1); 
-	}
-
 	destroy_simulation(&simulation, params.coders, params.coders);
 	return (0);
 }
