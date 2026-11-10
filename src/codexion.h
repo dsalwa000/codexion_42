@@ -10,6 +10,7 @@
 # include <pthread.h>
 
 # define NB_ARGS 8
+# define QUEUE_SIZE 2
 # define CHECK_WAIT 1000
 
 typedef enum e_sched
@@ -38,7 +39,7 @@ typedef struct s_request
 
 typedef struct s_queue
 {
-	t_request	requests[2];
+	t_request	requests[QUEUE_SIZE];
 	int			in_line;
 }	t_queue;
 
@@ -102,5 +103,11 @@ void		set_start_state(t_simulation *sim, int state);
 int			check_burnout(t_coder *coder);
 
 int			wait_for_start(t_simulation *sim);
+
+int			heap_push(t_queue *q, t_request req);
+int			heap_pop(t_queue *q, t_request *out);
+
+void		swap_requests(t_request *a, t_request *b);
+static int	is_before(t_request *a, t_request *b);
 
 #endif
