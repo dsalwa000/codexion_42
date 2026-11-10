@@ -31,10 +31,8 @@ static int	init_coder(t_simulation *sim, int i)
 	return (1);
 }
 
-static int	init_simulation(t_simulation *sim, t_params params)
+static int	init_sync(t_simulation *sim)
 {
-	memset(sim, 0, sizeof(*sim));
-	sim->params = params;
 	if (pthread_mutex_init(&sim->stop_mutex, NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&sim->log_mutex, NULL) != 0)
@@ -42,6 +40,28 @@ static int	init_simulation(t_simulation *sim, t_params params)
 		pthread_mutex_destroy(&sim->stop_mutex);
 		return (0);
 	}
+	if (pthread_mutex_init(&sim->start_mutex, NULL) != 0)
+	{
+		pthread_mutex_destroy(&sim->log_mutex);
+		pthread_mutex_destroy(&sim->stop_mutex);
+		return (0);
+	}
+	if (pthread_cond_init(&sim->start_cond, NULL) != 0)
+	{
+		pthread_mutex_destroy(&sim->start_mutex);
+		pthread_mutex_destroy(&sim->log_mutex);
+		pthread_mutex_destroy(&sim->stop_mutex);
+		return (0);
+	}
+	return (1);
+}
+
+static int	init_simulation(t_simulation *sim, t_params params)
+{
+	memset(sim, 0, sizeof(*sim));
+	sim->params = params;
+	if (!init_sync(sim))
+		return (0);
 	sim->dongles = malloc(sizeof(t_dongle) * params.coders);
 	sim->coders = malloc(sizeof(t_coder) * params.coders);
 	if (!sim->dongles || !sim->coders)

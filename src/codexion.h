@@ -70,7 +70,9 @@ typedef struct s_simulation
 	long long		start;
 	int				stopped;
 	int				nb_coders;
-	int				monitor_created;
+	int				start_state;
+	pthread_cond_t	start_cond;
+	pthread_mutex_t	start_mutex;
 	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	log_mutex;
 	pthread_t		monitor;
@@ -96,6 +98,9 @@ int			start_simulation(t_simulation *sim);
 
 int			is_stopped(t_simulation *sim);
 void		set_stopped(t_simulation *sim, int stopped);
+void		set_start_state(t_simulation *sim, int state);
 int			check_burnout(t_coder *coder);
+
+int			wait_for_start(t_simulation *sim);
 
 #endif

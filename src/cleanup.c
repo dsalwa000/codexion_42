@@ -2,13 +2,13 @@
 
 void	join_threads(t_simulation *sim)
 {
-	if (sim->monitor_created)
-		pthread_join(sim->monitor, NULL);
 	while (sim->nb_coders > 0)
 	{
 		sim->nb_coders--;
 		pthread_join(sim->coders[sim->nb_coders].thread, NULL);
 	}
+	if (sim->start_state == 1)
+		pthread_join(sim->monitor, NULL);
 }
 
 int	abort_start(t_simulation *sim)
@@ -16,6 +16,7 @@ int	abort_start(t_simulation *sim)
 	pthread_mutex_lock(&sim->stop_mutex);
 	sim->stopped = 1;
 	pthread_mutex_unlock(&sim->stop_mutex);
+	set_start_state(sim, -1);
 	join_threads(sim);
 	destroy_simulation(sim, sim->params.coders, sim->params.coders);
 	return (0);
@@ -40,6 +41,8 @@ void	destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders)
 	}
 	pthread_mutex_destroy(&sim->stop_mutex);
 	pthread_mutex_destroy(&sim->log_mutex);
+	pthread_mutex_destroy(&sim->start_mutex);
+	pthread_cond_destroy(&sim->start_cond);
 	free(sim->dongles);
 	free(sim->coders);
 }

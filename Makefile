@@ -7,7 +7,16 @@ SRC_DIR	= src
 OBJ_DIR	= obj
 INC_DIR	= src
 
-SRC_FILES = main.c parser.c time.c setup.c cleanup.c functions.c utils.c logger.c threads.c
+SRC_FILES = main.c \
+			parser.c \
+			time.c \
+			setup.c \
+			cleanup.c \
+			utils.c \
+			logger.c \
+			threads.c \
+			monitor.c \
+			coder.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
