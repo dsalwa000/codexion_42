@@ -48,8 +48,6 @@ typedef struct s_dongle
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
 	int				is_held;
-	long long		available_at;
-	long long		next_ticket;
 	t_queue			queue;
 }	t_dongle;
 
@@ -84,7 +82,7 @@ typedef struct s_simulation
 int			parser(int argc, char **args, t_params *params);
 
 long long	get_time_ms(void);
-void		stop_therad_for(long long ms);
+void		ft_sleep(t_simulation *sim, long long ms);
 
 int			setup_simulation(t_simulation *sim, t_params params);
 
@@ -108,6 +106,10 @@ int			heap_push(t_queue *q, t_request req);
 int			heap_pop(t_queue *q, t_request *out);
 
 void		swap_requests(t_request *a, t_request *b);
-static int	is_before(t_request *a, t_request *b);
+int			is_before(t_request *a, t_request *b);
+
+t_request	create_request(t_coder *c);
+void		add_request_to_queue(t_dongle *d, t_request req);
+int			release_dongle(t_dongle *d);
 
 #endif

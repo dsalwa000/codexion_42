@@ -8,11 +8,11 @@ long long	get_time_ms(void)
 	return ((long long)timev.tv_sec * 1000 + timev.tv_usec / 1000);
 }
 
-void	stop_therad_for(long long ms)
+void	ft_sleep(t_simulation *sim, long long ms)
 {
 	long long	end;
 
 	end = get_time_ms() + ms;
-	while (get_time_ms() < end)
+	while (get_time_ms() < end && !is_stopped(sim))
 		usleep(500);
 }

@@ -17,7 +17,8 @@ SRC_FILES = main.c \
 			threads.c \
 			monitor.c \
 			coder.c \
-			heap.c
+			heap.c \
+			dongle.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

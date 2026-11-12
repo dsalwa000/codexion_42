@@ -29,14 +29,16 @@ static void	*coder_thread(void *arg)
 {
 	t_coder			*coder;
 	t_simulation	*sim;
+	t_request		req;
 
 	coder = (t_coder *)arg;
 	sim = coder->simulation;
 	if (wait_for_start(sim) == -1)
 		return (NULL);
-
-	// START
-
+	while (!is_stopped(sim))
+	{
+		
+	}
 	return (NULL);
 }
 

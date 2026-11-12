@@ -27,10 +27,13 @@ void	set_start_state(t_simulation *sim, int state)
 
 int	check_burnout(t_coder *coder)
 {
-	int	used_time;
-	int	burnout;
+	int				used_time;
+	int				burnout;
+	t_simulation	*sim;
 
+	pthread_mutex_lock(&coder->state_mutex);
 	used_time = get_time_ms() - coder->last_compile_start;
+	pthread_mutex_unlock(&coder->state_mutex);
 	burnout = coder->simulation->params.t_burnout;
 	if (used_time > burnout)
 		return (1);
