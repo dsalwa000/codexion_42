@@ -48,6 +48,7 @@ typedef struct s_dongle
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
 	int				is_held;
+	long long		available_at;
 	t_queue			queue;
 }	t_dongle;
 
@@ -88,19 +89,23 @@ int			setup_simulation(t_simulation *sim, t_params params);
 
 void		join_threads(t_simulation *sim);
 int			abort_start(t_simulation *sim);
-void		destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders);
+void		destroy_sim(t_simulation *sim, int nb_dongles, int nb_coders);
 
 void		print_status(t_coder *coder, char *msg);
 int			print_error(char *msg);
 
 int			start_simulation(t_simulation *sim);
 
+int			all_compiled(t_simulation *sim);
 int			is_stopped(t_simulation *sim);
 void		set_stopped(t_simulation *sim, int stopped);
 void		set_start_state(t_simulation *sim, int state);
 int			check_burnout(t_coder *coder);
 
+int			wait_for_dongles(t_coder *coder);
 int			wait_for_start(t_simulation *sim);
+void		compile_debug_refactor(t_coder *coder);
+void		*lonely_coder(t_coder *coder);
 
 int			heap_push(t_queue *q, t_request req);
 int			heap_pop(t_queue *q, t_request *out);
@@ -110,6 +115,6 @@ int			is_before(t_request *a, t_request *b);
 
 t_request	create_request(t_coder *c);
 void		add_request_to_queue(t_dongle *d, t_request req);
-int			release_dongle(t_dongle *d);
+int			start_compiling(t_dongle *first, t_dongle *second, int coder_id);
 
 #endif

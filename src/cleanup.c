@@ -18,11 +18,11 @@ int	abort_start(t_simulation *sim)
 	pthread_mutex_unlock(&sim->stop_mutex);
 	set_start_state(sim, -1);
 	join_threads(sim);
-	destroy_simulation(sim, sim->params.coders, sim->params.coders);
+	destroy_sim(sim, sim->params.coders, sim->params.coders);
 	return (0);
 }
 
-void	destroy_simulation(t_simulation *sim, int nb_dongles, int nb_coders)
+void	destroy_sim(t_simulation *sim, int nb_dongles, int nb_coders)
 {
 	int	i;
 

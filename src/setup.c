@@ -21,11 +21,16 @@ static int	init_coder(t_simulation *sim, int i)
 	memset(coder, 0, sizeof(*coder));
 	coder->id = i + 1;
 	coder->simulation = sim;
-	coder->first = &sim->dongles[i];
 	if (i == sim->params.coders - 1)
-		coder->second = &sim->dongles[0];
+	{
+		coder->first = &sim->dongles[0];
+		coder->second = &sim->dongles[i];
+	}
 	else
+	{
+		coder->first = &sim->dongles[i];
 		coder->second = &sim->dongles[i + 1];
+	}
 	if (pthread_mutex_init(&coder->state_mutex, NULL) != 0)
 		return (0);
 	return (1);
@@ -66,7 +71,7 @@ static int	init_simulation(t_simulation *sim, t_params params)
 	sim->coders = malloc(sizeof(t_coder) * params.coders);
 	if (!sim->dongles || !sim->coders)
 	{
-		destroy_simulation(sim, 0, 0);
+		destroy_sim(sim, 0, 0);
 		return (0);
 	}
 	return (1);
@@ -83,7 +88,7 @@ int	setup_simulation(t_simulation *sim, t_params params)
 		i++;
 	if (i < params.coders)
 	{
-		destroy_simulation(sim, i, 0);
+		destroy_sim(sim, i, 0);
 		return (0);
 	}
 	i = 0;
@@ -91,7 +96,7 @@ int	setup_simulation(t_simulation *sim, t_params params)
 		i++;
 	if (i < params.coders)
 	{
-		destroy_simulation(sim, params.coders, i);
+		destroy_sim(sim, params.coders, i);
 		return (0);
 	}
 	return (1);

@@ -3,7 +3,7 @@
 long long	get_time_ms(void)
 {
 	struct timeval	timev;
-	
+
 	gettimeofday(&timev, NULL);
 	return ((long long)timev.tv_sec * 1000 + timev.tv_usec / 1000);
 }

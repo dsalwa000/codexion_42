@@ -14,6 +14,6 @@ int	main(int argc, char **argv)
 		abort_start(&simulation);
 		return (print_error("thread creation error"));
 	}
-	destroy_simulation(&simulation, params.coders, params.coders);
+	destroy_sim(&simulation, params.coders, params.coders);
 	return (0);
 }
