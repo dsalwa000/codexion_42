@@ -46,7 +46,6 @@ typedef struct s_queue
 typedef struct s_dongle
 {
 	pthread_mutex_t	mutex;
-	pthread_cond_t	cond;
 	int				is_held;
 	long long		available_at;
 	t_queue			queue;
