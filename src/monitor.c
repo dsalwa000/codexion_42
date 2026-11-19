@@ -39,8 +39,8 @@ void	set_start_state(t_simulation *sim, int state)
 {
 	pthread_mutex_lock(&sim->start_mutex);
 	sim->start_state = state;
-	pthread_mutex_unlock(&sim->start_mutex);
 	pthread_cond_broadcast(&sim->start_cond);
+	pthread_mutex_unlock(&sim->start_mutex);
 }
 
 int	check_burnout(t_coder *coder)
